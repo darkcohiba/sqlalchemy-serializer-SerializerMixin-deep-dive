@@ -1,3 +1,7 @@
+## Database!
+
+![DB Schema](image.png)
+
 # Phase 4 Full-Stack Application Project Template
 
 ## Learning Goals
