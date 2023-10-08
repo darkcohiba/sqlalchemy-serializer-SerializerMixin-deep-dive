@@ -39,22 +39,54 @@ def create_projects():
         project_list.append(p)
     return project_list
 
+def create_tasks(projects, engineers):
+    task_list = []
+    for pro in projects:
+        for _ in range(5):
+            engineer = rc(engineers)
+            t = Tasks(
+                title=fake.name(),
+                cost= randint(50, 10000),
+                description=fake.paragraph(),
+                project_id=pro.id,
+                engineer_id=engineer.id
+            )
+        task_list.append(t)
+    return task_list
+
 if __name__ == '__main__':
     fake = Faker()
     with app.app_context():
         print("Starting seed...")
         # Seed code goes here!
+        print("removing current data")
+        db.session.query(Engineers).delete()
+        db.session.query(Tasks).delete()
+        db.session.query(Projects).delete()
+
 
         # create_db()
+        print("seeding engineers")
 
         eng = create_engineers()
         db.session.add_all(eng)
         db.session.commit()
 
-
+        print("seeding projects")
         proj = create_projects()
-        db.session.commit(proj)
+        db.session.add_all(proj)
         db.session.commit()
+
+
+        print("seeding tasks")
+        task = create_tasks(proj, eng)
+        db.session.add_all(task)
+        db.session.commit()
+
+        print("great sucess! Everything is seeded!✅")
+
+
+
 
 
 
