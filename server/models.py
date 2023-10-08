@@ -6,37 +6,39 @@ from config import db
 
 # Models go here!
 
-class Gladiator(db.Model, SerializerMixin):
-    __tablename__ = 'gladiator_table'
+class Projects(db.Model, SerializerMixin):
+    __tablename__ = 'projects_table'
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String, nullable = False)
-    number_of_fights = db.Column(db.Integer)
-    weapon = db.Column(db.String)
+    company = db.Column(db.String, nullable = False)
+    scope = db.Column(db.String)
+    budget = db.Column(db.Integer)
     # relationships
-    fights_field = relationship('Fights', back_populates='gladiator_field', cascade = 'all, delete')
+    task_relationship_field = relationship('Tasks', back_populates='project_relationship_field', cascade = 'all, delete')
 
 
-class Fights(db.Model, SerializerMixin):
-    __tablename__ = 'fights_table'
+class Tasks(db.Model, SerializerMixin):
+    __tablename__ = 'tasks_table'
     id = db.Column(db.Integer, primary_key=True)
+    title = db.Column(db.String)
+    cost = db.Column(db.Integer)
+    description = db.Column(db.String)
 
-    gladiator_id = db.Column(db.Integer, db.ForeignKey('gladiator_table.id'))
+    project_id = db.Column(db.Integer, db.ForeignKey('project_table.id'))
+    # corresseponding relationship
+    project_relationship_field = relationship('Projects', back_populates='task_relationship_field')
+
+    engineer_id = db.Column(db.Integer, db.ForeignKey('engineers_table.id'))
     # relationships
+    engineer_relationship_field = relationship('Engineers', back_populates='tasks_relationship_field')
 
-    gladiator_field = relationship('Gladiator', back_populates='fights_field')
-
-    arena_id = db.Column(db.Integer, db.ForeignKey('arena_table.id'))
-    # relationships
-    arena_field = relationship('Arena', back_populates='fight_field')
-
-    serialize_rules = ('-arena_field', '-gladiator_field')
+    # serialize_rules = ('-arena_field', '-gladiator_field')
 
 
 
-class Arena(db.Model, SerializerMixin):
-    __tablename__ = 'arena_table'
+class Engineers(db.Model, SerializerMixin):
+    __tablename__ = 'engineers_table'
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String, nullable = False)
     location = db.Column(db.String)
     # relationships
-    fight_field = relationship('Fights', back_populates='arena_field')
+    tasks_relationship_field = relationship('Tasks', back_populates='engineer_relationship_field')
