@@ -23,7 +23,7 @@ class Tasks(db.Model, SerializerMixin):
     cost = db.Column(db.Integer)
     description = db.Column(db.String)
 
-    project_id = db.Column(db.Integer, db.ForeignKey('project_table.id'))
+    project_id = db.Column(db.Integer, db.ForeignKey('projects_table.id'))
     # corresseponding relationship
     project_relationship_field = relationship('Projects', back_populates='task_relationship_field')
 
