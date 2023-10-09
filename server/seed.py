@@ -51,7 +51,7 @@ def create_tasks(projects, engineers):
                 project_id=pro.id,
                 engineer_id=engineer.id
             )
-        task_list.append(t)
+            task_list.append(t)
     return task_list
 
 if __name__ == '__main__':

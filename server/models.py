@@ -31,7 +31,8 @@ class Tasks(db.Model, SerializerMixin):
     # relationships
     engineer_relationship_field = relationship('Engineers', back_populates='tasks_relationship_field')
 
-    # serialize_rules = ('-arena_field', '-gladiator_field')
+    # remove the two relationships that will cause a recursive error
+    serialize_rules = ('-engineer_relationship_field.tasks_relationship_field', '-project_relationship_field.task_relationship_field')
 
 
 
