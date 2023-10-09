@@ -19,15 +19,18 @@
 5. exclude_ux:
 
 - A tuple or list of fields to exclude when the object is updated (UX stands for Update Exclude). This can be useful when certain fields shouldn't be modified after they are initially set.
-datetime_format:
 
-A string to specify how datetime fields should be formatted in the serialized output. For example, datetime_format='%Y-%m-%d %H:%M:%S' would format datetime fields in that specific string format.
-load_only (in some versions):
+6. datetime_format:
 
-It's a tuple or list of fields that should be loaded from the database but not included in the serialized output. Useful when you need to load certain fields for processing but don't want to expose them in the response.
-include_methods:
+- A string to specify how datetime fields should be formatted in the serialized output. For example, datetime_format='%Y-%m-%d %H:%M:%S' would format datetime fields in that specific string format.
 
-A tuple or list of method names. If specified, the methods are called, and their results are included in the serialized output. This can be useful when you want to include computed values or results of certain operations in the serialized output.
+7. load_only (in some versions):
+
+- It's a tuple or list of fields that should be loaded from the database but not included in the serialized output. Useful when you need to load certain fields for processing but don't want to expose them in the response.
+
+8. include_methods:
+
+- A tuple or list of method names. If specified, the methods are called, and their results are included in the serialized output. This can be useful when you want to include computed values or results of certain operations in the serialized output.
 
 ## Database!
 
