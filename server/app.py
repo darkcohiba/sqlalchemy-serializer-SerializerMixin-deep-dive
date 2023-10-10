@@ -44,6 +44,23 @@ def tasksAll():
         tas = [t.to_dict() for t in Tasks.query.all()]
         return make_response(tas, 200)
 
+@app.route('/tasks/<id>')
+def get_tasks_by_id(id):
+    task = Tasks.query.filter(
+        Tasks.id == id
+    ).first()
+
+    if not task:
+        return make_response(
+            jsonify({'error': 'Task not found'}),
+            404
+        )
+
+    return make_response(
+        jsonify(task.to_dict()),
+        200
+    )
+
 @app.route("/engineers")
 def enginAll():
     if request.method == "GET":
