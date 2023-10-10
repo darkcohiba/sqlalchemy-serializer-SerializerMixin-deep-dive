@@ -20,8 +20,11 @@ def index():
 @app.route("/projects")
 def projectsAll():
     if request.method == "GET":
-        projs = [p.to_dict(rules=('check_costs','display_budget', '-budget')) for p in Projects.query.all()]
+        projs = [p.to_dict() for p in Projects.query.all()]
         return make_response(projs, 200)
+    
+        # projs = [p.to_dict(rules=('check_costs','display_budget', '-budget')) for p in Projects.query.all()]
+
     
         # projs = [p.to_dict(rules=('-budget',)) for p in Projects.query.all()]
         # projs = [p.to_dict(only=('scope', 'budget')) for p in Projects.query.all()]
@@ -44,8 +47,11 @@ def tasksAll():
 @app.route("/engineers")
 def enginAll():
     if request.method == "GET":
-        engL = [e.to_dict(rules=('check_spending',)) for e in Engineers.query.all()]
+        engL = [e.to_dict() for e in Engineers.query.all()]
         return make_response(engL, 200)
+    
+        # engL = [e.to_dict(rules=('check_spending','total_tasks', 'avg_spend_per_task','-tasks_relationship_field')) for e in Engineers.query.all()]
+
 
 
 
