@@ -21,6 +21,8 @@ def index():
 def projectsAll():
     if request.method == "GET":
         projs = [p.to_dict() for p in Projects.query.all()]
+        # projs = [p.to_dict(rules=('check_costs','display_budget', '-budget')) for p in Projects.query.all()]
+
         return make_response(projs, 200)
     
         # projs = [p.to_dict(rules=('check_costs','display_budget', '-budget')) for p in Projects.query.all()]
@@ -46,28 +48,41 @@ def tasksAll():
 
 @app.route('/tasks/<id>')
 def get_tasks_by_id(id):
-    task = Tasks.query.filter(
-        Tasks.id == id
-    ).first()
-
-    if not task:
+    if task := Tasks.query.filter(Tasks.id == id).first():
+        return make_response(
+            jsonify(task.to_dict(only=('cost','description', 'engineer_relationship_field', 'project_relationship_field', 'title'))),
+            200
+        )
+    else:
         return make_response(
             jsonify({'error': 'Task not found'}),
             404
         )
+    
+    # def get_tasks_by_id(id):
+    # task = Tasks.query.filter(
+    #     Tasks.id == id
+    # ).first()
 
-    return make_response(
-        jsonify(task.to_dict()),
-        200
-    )
+    # if not task:
+    #     return make_response(
+    #         jsonify({'error': 'Task not found'}),
+    #         404
+    #     )
+
+    # return make_response(
+    #     jsonify(task.to_dict()),
+    #     200
+    # )
 
 @app.route("/engineers")
 def enginAll():
     if request.method == "GET":
         engL = [e.to_dict() for e in Engineers.query.all()]
+        # engL = [e.to_dict(rules=('check_spending','total_tasks', 'avg_spend_per_task','-tasks_relationship_field')) for e in Engineers.query.all()]
+
         return make_response(engL, 200)
     
-        # engL = [e.to_dict(rules=('check_spending','total_tasks', 'avg_spend_per_task','-tasks_relationship_field')) for e in Engineers.query.all()]
 
 
 
