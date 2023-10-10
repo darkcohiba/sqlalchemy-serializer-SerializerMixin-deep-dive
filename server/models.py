@@ -1,6 +1,8 @@
 from sqlalchemy_serializer import SerializerMixin
 from sqlalchemy.ext.associationproxy import association_proxy
 from sqlalchemy.orm import validates, relationship
+from sqlalchemy.sql import func
+
 
 from config import db
 
@@ -12,6 +14,8 @@ class Projects(db.Model, SerializerMixin):
     company = db.Column(db.String, nullable = False)
     scope = db.Column(db.String)
     budget = db.Column(db.Integer)
+    time_created = db.Column(db.DateTime, server_default=func.now())
+    time_updated = db.Column(db.DateTime, onupdate=func.now())
     # relationships
     task_relationship_field = relationship('Tasks', back_populates='project_relationship_field', cascade = 'all, delete')
 
