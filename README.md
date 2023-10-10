@@ -1,5 +1,9 @@
 # Different ways to serialize
 
+sources:
+
+[SQL Alchemy](https://pypi.org/project/SQLAlchemy-serializer/)
+
 1. rules:
 
 - Exclude fields: '-field_name' excludes a specific field from the serialized output. Nested fields: 'parent_field.child_field' allows you to reference fields in related models. Custom transformations: You can perform arithmetic operations on numeric fields, like 'age + 5' to add 5 to the age value.
@@ -9,9 +13,9 @@
 book.to_dict(rules=('-title', 'author.name'))
 ```
 
-- app.py example 
+- models.py example 
 ```python
-book.to_dict(rules=('-title', 'author.name'))
+serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include author's name
 ```
 
 2. only:
@@ -20,7 +24,12 @@ book.to_dict(rules=('-title', 'author.name'))
 
 - app.py example 
 ```python
-book.to_dict(only=('title',))
+serialize_only = ('title', 'author.name')  # Only serialize title and author's name
+```
+
+- models.py example 
+```python
+serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include author's name
 ```
 
 3. exclude:
