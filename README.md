@@ -4,33 +4,82 @@
 
 - Exclude fields: '-field_name' excludes a specific field from the serialized output. Nested fields: 'parent_field.child_field' allows you to reference fields in related models. Custom transformations: You can perform arithmetic operations on numeric fields, like 'age + 5' to add 5 to the age value.
 
+- app.py example 
+```python
+book.to_dict(rules=('-title', 'author.name'))
+```
+
+- app.py example 
+```python
+book.to_dict(rules=('-title', 'author.name'))
+```
+
 2. only:
 
 - It's a tuple or list of fields to include in the serialization. Only fields specified here will be serialized; all others will be excluded. For example, only=('name', 'age') would only include the name and age fields in the serialized output.
+
+- app.py example 
+```python
+book.to_dict(only=('title',))
+```
 
 3. exclude:
 
 - It's the opposite of only. It's a tuple or list of fields to exclude from the serialization.
 
+- app.py example 
+```python
+book.to_dict(exclude=('title',))
+```
+
+
 4. include:
 
 - A tuple or list of related fields (from other models) to include in the serialized output. For example, if your Fight model had a relationship to a Gladiator model, you might use include=('gladiator.name',) to include the gladiator's name in the serialized output.
+
+- app.py example 
+```python
+book.to_dict(include=('title',))
+```
 
 5. exclude_ux:
 
 - A tuple or list of fields to exclude when the object is updated (UX stands for Update Exclude). This can be useful when certain fields shouldn't be modified after they are initially set.
 
+- does not work in the app.py; models example
+```python
+serialize_exclude_ux = ('id',)
+```
+
 6. datetime_format:
 
 - A string to specify how datetime fields should be formatted in the serialized output. For example, datetime_format='%Y-%m-%d %H:%M:%S' would format datetime fields in that specific string format.
+
+- app.py example 
+```python
+book.to_dict(datetime_format='%Y-%m-%d')
+```
 
 7. load_only (in some versions):
 
 - It's a tuple or list of fields that should be loaded from the database but not included in the serialized output. Useful when you need to load certain fields for processing but don't want to expose them in the response.
 
+- app.py example 
+```python
+data = {"title": "New Book", "author_id": 2}
+book = Book().load(data, load_only=('author_id',))
+print(book.to_dict())
+```
+
+
 8. include_methods:
 
 - A tuple or list of method names. If specified, the methods are called, and their results are included in the serialized output. This can be useful when you want to include computed values or results of certain operations in the serialized output.
+
+- app.py example 
+```python
+book.to_dict(include_methods=('price_with_tax',))
+```
 
 ## Database!
 
