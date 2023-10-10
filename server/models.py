@@ -15,6 +15,15 @@ class Projects(db.Model, SerializerMixin):
     # relationships
     task_relationship_field = relationship('Tasks', back_populates='project_relationship_field', cascade = 'all, delete')
 
+    def check_costs(self):
+        costs = db.session.query(Tasks).filter(Tasks.project_id == self.id).all()
+        return "${:,.2f}".format(sum(cost.cost for cost in costs))
+    
+    def display_budget(self):
+        return "${:,.2f}".format(self.budget)
+
+    
+
 
 class Tasks(db.Model, SerializerMixin):
     __tablename__ = 'tasks_table'
@@ -36,6 +45,7 @@ class Tasks(db.Model, SerializerMixin):
 
 
 
+
 class Engineers(db.Model, SerializerMixin):
     __tablename__ = 'engineers_table'
     id = db.Column(db.Integer, primary_key=True)
@@ -43,3 +53,7 @@ class Engineers(db.Model, SerializerMixin):
     location = db.Column(db.String)
     # relationships
     tasks_relationship_field = relationship('Tasks', back_populates='engineer_relationship_field')
+
+    def check_spending(self):
+        spending_list = db.session.query(Tasks).filter(Tasks.engineer_id == self.id).all()
+        return sum(cost.cost for cost in spending_list)

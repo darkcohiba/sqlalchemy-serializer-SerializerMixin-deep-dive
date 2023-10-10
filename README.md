@@ -6,7 +6,7 @@ sources:
 
 1. rules:
 
-- Exclude fields: '-field_name' excludes a specific field from the serialized output. Nested fields: 'parent_field.child_field' allows you to reference fields in related models. Custom transformations: You can perform arithmetic operations on numeric fields, like 'age + 5' to add 5 to the age value.
+- Exclude fields: '-field_name' excludes a specific field from the serialized output. Nested fields: 'parent_field.child_field' allows you to reference fields in related models. Custom transformations: You can perform arithmetic operations on numeric fields, like 'age + 5' to add 5 to the age value. Add methods this way!
 
 - app.py example 
 ```python
@@ -15,7 +15,7 @@ book.to_dict(rules=('-title', 'author.name'))
 
 - models.py example 
 ```python
-serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include author's name
+serialize_rules = ('-author_id', 'author.name')
 ```
 
 2. only:
@@ -24,15 +24,15 @@ serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include au
 
 - app.py example 
 ```python
-serialize_only = ('title', 'author.name')  # Only serialize title and author's name
+book.to_dict(only=('title',))
 ```
 
 - models.py example 
 ```python
-serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include author's name
+serialize_only = ('title', 'author.name')
 ```
 
-3. exclude:
+3. exclude (NO LONGER SUPPORTED):
 
 - It's the opposite of only. It's a tuple or list of fields to exclude from the serialization.
 
@@ -41,8 +41,12 @@ serialize_rules = ('-author_id', 'author.name')  # Exclude author_id, include au
 book.to_dict(exclude=('title',))
 ```
 
+- models.py example 
+```python
+serialize_exclude = ('author_id',)
+```
 
-4. include:
+4. include (NO LONGER SUPPORTED):
 
 - A tuple or list of related fields (from other models) to include in the serialized output. For example, if your Fight model had a relationship to a Gladiator model, you might use include=('gladiator.name',) to include the gladiator's name in the serialized output.
 
@@ -51,16 +55,22 @@ book.to_dict(exclude=('title',))
 book.to_dict(include=('title',))
 ```
 
-5. exclude_ux:
+- models.py example 
+```python
+serialize_include = ('books.title',)
+```
+
+
+5. exclude_ux (NO LONGER SUPPORTED):
 
 - A tuple or list of fields to exclude when the object is updated (UX stands for Update Exclude). This can be useful when certain fields shouldn't be modified after they are initially set.
 
-- does not work in the app.py; models example
+- does not work in the app.py; models.py example
 ```python
 serialize_exclude_ux = ('id',)
 ```
 
-6. datetime_format:
+6. datetime_format (NO LONGER SUPPORTED):
 
 - A string to specify how datetime fields should be formatted in the serialized output. For example, datetime_format='%Y-%m-%d %H:%M:%S' would format datetime fields in that specific string format.
 
@@ -69,7 +79,12 @@ serialize_exclude_ux = ('id',)
 book.to_dict(datetime_format='%Y-%m-%d')
 ```
 
-7. load_only (in some versions):
+- models.py example 
+```python
+serialize_datetime_format = '%Y-%m-%d'
+```
+
+7. load_only (NO LONGER SUPPORTED):
 
 - It's a tuple or list of fields that should be loaded from the database but not included in the serialized output. Useful when you need to load certain fields for processing but don't want to expose them in the response.
 
@@ -80,14 +95,24 @@ book = Book().load(data, load_only=('author_id',))
 print(book.to_dict())
 ```
 
+- models.py example 
+```python
+serialize_load_only = ('author_id',)
+```
 
-8. include_methods:
+
+8. include_methods (NO LONGER SUPPORTED):
 
 - A tuple or list of method names. If specified, the methods are called, and their results are included in the serialized output. This can be useful when you want to include computed values or results of certain operations in the serialized output.
 
 - app.py example 
 ```python
 book.to_dict(include_methods=('price_with_tax',))
+```
+
+- models.py example 
+```python
+serialize_include_methods = ('price_with_tax',)
 ```
 
 ## Database!
